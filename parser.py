@@ -40,17 +40,20 @@ class PacketParser:
         destination_mac = format_mac(ethernet[0])
         source_mac = format_mac(ethernet[1])
 
-        eth_protocol = socket.ntohs(ethernet[2])
+        eth_protocol = ethernet[2]
 
         print(Fore.MAGENTA + "\n========== Ethernet ==========" + Style.RESET_ALL)
 
         print(f"Source MAC       : {source_mac}")
         print(f"Destination MAC  : {destination_mac}")
         print(f"EtherType        : {hex(eth_protocol)}")
+        print(f"EtherType Decimal : {eth_protocol}")
+        print(f"EtherType Hex     : {hex(eth_protocol)}")
 
-        if eth_protocol != 0x0800:
-            print("Non IPv4 Packet\n")
-            return
+        if eth_protocol not in (0x0800, 0x0008):
+
+         print(f"Unknown EtherType : {hex(eth_protocol)}")
+         return
 
         # ---------------------------------
         # IPv4 Header
